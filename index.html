@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lorenzo Masnah — Collector Catalogue</title>
+<meta name="description" content="Collector catalogue of available works by Lorenzo Masnah.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f6f4ef; --ink:#1b1a18; --muted:#6b675f; --rule:#d9d5cc; --card:#fffdf9;
+    --serif:"EB Garamond", Georgia, serif; --sans:"Inter", system-ui, sans-serif; --mono:"IBM Plex Mono", ui-monospace, monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+  header{padding:72px 0 40px;border-bottom:1px solid var(--rule)}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(40px,6vw,72px);line-height:1.02;margin:14px 0 18px;letter-spacing:-.01em}
+  .lede{font-family:var(--serif);font-size:20px;line-height:1.5;max-width:720px;margin:0;color:#2f2d29}
+  .meta-row{display:flex;flex-wrap:wrap;gap:28px;margin-top:28px;font-size:13px;color:var(--muted)}
+  .meta-row b{display:block;color:var(--ink);font-weight:500;font-size:14px;margin-top:2px}
+  .toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 0;border-bottom:1px solid var(--rule);flex-wrap:wrap}
+  .toolbar .count{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.04em}
+  .filters{display:flex;gap:6px;flex-wrap:wrap}
+  .filters button{font:500 13px var(--sans);background:transparent;border:1px solid var(--rule);color:var(--ink);padding:7px 14px;border-radius:999px;cursor:pointer}
+  .filters button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .filters button:focus-visible,.work button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:48px 36px;padding:44px 0 80px}
+  .work{display:flex;flex-direction:column}
+  .work .frame{background:#ebe8e1;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;overflow:hidden;border:0;padding:0;cursor:zoom-in;width:100%}
+  .work .frame img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
+  .work .frame:hover img{transform:scale(1.03)}
+  .work .no{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:18px;letter-spacing:.04em}
+  .work h2{font-family:var(--serif);font-weight:500;font-size:26px;line-height:1.15;margin:6px 0 10px}
+  .spec{font-size:14px;line-height:1.55;color:#34322e;margin:0}
+  .spec span{display:block}
+  .desc{font-family:var(--serif);font-size:17px;line-height:1.55;color:#2f2d29;margin:14px 0 0}
+  .price{margin-top:16px;padding-top:12px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+  .price b{color:var(--ink);font-weight:500}
+  .price b.sold{color:#9a3b2e}
+  .inquire{display:inline-block;align-self:flex-start;margin-top:14px;font:500 13px var(--sans);color:var(--paper);background:var(--ink);padding:9px 16px;border-radius:999px;text-decoration:none}
+  .inquire:hover{opacity:.85}
+  .inquire:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .meta-row a{color:inherit}
+  .lb aside .inquire{background:#f3f0ea;color:#1b1a18}
+  .lb aside .price{color:#b8b2a6;border-color:#3a3833}
+  .lb aside .price b{color:#f3f0ea}
+  footer{border-top:1px solid var(--rule);padding:36px 0 60px;font-size:13px;color:var(--muted);line-height:1.6}
+  /* lightbox */
+  .lb{position:fixed;inset:0;background:rgba(20,19,17,.94);display:none;z-index:10;color:#f3f0ea}
+  .lb.open{display:grid;grid-template-columns:1fr minmax(280px,380px)}
+  .lb .img{display:flex;align-items:center;justify-content:center;padding:32px;min-height:0}
+  .lb .img img{max-width:100%;max-height:calc(100vh - 64px);object-fit:contain}
+  .lb aside{background:#1f1e1b;padding:56px 32px 32px;overflow:auto}
+  .lb aside .no{font-family:var(--mono);font-size:12px;color:#b8b2a6}
+  .lb aside h2{font-family:var(--serif);font-weight:500;font-size:30px;margin:8px 0 14px;line-height:1.1}
+  .lb aside .spec{color:#e4dfd5}
+  .lb aside .desc{color:#e4dfd5}
+  .lb .ctl{position:absolute;top:16px;right:16px;display:flex;gap:8px}
+  .lb .ctl button{background:#f3f0ea;color:#1b1a18;border:0;font:500 13px var(--sans);padding:8px 14px;border-radius:999px;cursor:pointer}
+  @media (max-width:820px){
+    .lb.open{grid-template-columns:1fr;grid-template-rows:55vh auto;overflow:auto}
+    .lb aside{padding:24px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Collector Catalogue · Available Works</div>
+    <h1>Lorenzo Masnah</h1>
+    <p class="lede">Colombian-born artist working at the meeting point of digital imagery and analog process. Silkscreen, stencil, plotter and laser mark-making sit alongside hand-painted gesture in collage-driven works on identity, media and cultural memory. Many of the pieces here grow out of <em>The Noosphere Tribe</em>, the artist's 10,000-piece generative collage collection on Ethereum, carrying its avatars, traits and raw metadata off the screen and onto linen, paper and found material.</p>
+    <div class="meta-row">
+      <div>Works in this edition<b id="total">—</b></div>
+      <div>Enquiries<b><a href="mailto:loro@masnah.studio" target="_top">loro@masnah.studio</a></b></div>
+      <div>Updated<b>November 2026</b></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="toolbar">
+    <div class="filters" role="group" aria-label="Filter by series" id="filters"></div>
+    <div class="count" id="count"></div>
+  </div>
+  <main class="grid" id="grid"></main>
+</div>
+
+<footer>
+  <div class="wrap">
+    All works are unique originals unless noted. Dimensions are given in inches as listed by the studio. Images are installation photographs; colour may vary slightly from the original. For availability, shipping and condition reports, please contact the studio at loro@masnah.studio.
+  </div>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Artwork detail">
+  <div class="img"><img id="lbImg" alt=""></div>
+  <aside id="lbInfo"></aside>
+  <div class="ctl">
+    <button id="prev" aria-label="Previous work">←</button>
+    <button id="next" aria-label="Next work">→</button>
+    <button id="close">Close</button>
+  </div>
+</div>
+
+<script>
+/* ===== Catalogue data — add new batches to this list ===== */
+const WORKS = [
+ {
+  "no": "0000",
+  "title": "VR Clown",
+  "year": "2024",
+  "series": "Collage",
+  "medium": "Collage and paint on found wood",
+  "size": "49.5 × 37 in.",
+  "price": "$8,000",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0000.jpg",
+  "desc": "A large portrait built on a slab of weathered found wood, its scuffed grain, drips and pale paint stains left showing around the figure. A woman with dark, wavy contour-drawn hair wears a black visor band across her eyes like a VR headset, a glossy red clown nose at its centre. Her face glows in orange, her lips are deep purple, and a blue-and-white halftone T-shirt and chain anchor the bust. A Parental Advisory label and the artist’s tag sit in the lower corners. Part screen-age self-portrait, part carnival mask, it is the largest work in this catalogue."
+ },
+ {
+  "no": "0001",
+  "title": "Campeon (Super Fresh, Filter #1)",
+  "year": "2025",
+  "series": "Objects",
+  "medium": "Paint on wood panel",
+  "size": "8 × 8 × 1.5 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0001.jpg",
+  "desc": "A soft pack of Campeón cigarettes, painted life-size on a deep, chalky off-white wood panel. The flame-and-crown emblem, the bold wordmark, the linked coloured squares and striped bars, and the “Super Fresh Filter” banner are all rendered by hand, slightly wobbly and textured with thick white impasto for the cellophane. A small, everyday object from the corner shop is given the weight of a devotional icon."
+ },
+ {
+  "no": "0002",
+  "title": "Piel Roja (#3)",
+  "year": "2025",
+  "series": "Objects",
+  "medium": "Paint on wood panel",
+  "size": "5 × 5 × 1.5 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0002.jpg",
+  "desc": "A pack of Pielroja, a long-standing Colombian cigarette brand, painted on a small block of bare blond wood. The red-and-black headdress profile, the “Cigarrillos Pielroja — Industria Colombiana” lettering and the crumpled foil top are drawn in fine line and white paint, leaving the wood grain as the ground. The work looks at a national packaging icon, and the image of Indigenous identity it borrowed, as a piece of shared memory."
+ },
+ {
+  "no": "0003",
+  "title": "Mustang Red Box",
+  "year": "2026",
+  "series": "Objects",
+  "medium": "Found object",
+  "size": "6.5 × 1.5 × 1.5 in.",
+  "price": "",
+  "sold": true,
+  "note": "",
+  "img": "images/LM-0003.jpg",
+  "desc": "A worn red matchbox — “Mustang, fósforos de madera”, with its rearing yellow horse — floated between two panes of glass in a natural oak frame. Left unaltered, the box is presented as a found readymade. Its scuffed edges and faded print carry the history of pockets and kitchen drawers, and the frame turns a throwaway object into a relic."
+ },
+ {
+  "no": "0004",
+  "title": "Good Year Poker",
+  "year": "2026",
+  "series": "Objects",
+  "medium": "Collage on found object, framed",
+  "size": "6.5 × 4.5 × 2 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0004.jpg",
+  "desc": "A crushed, cellophane-wrapped pack becomes the ground for a small collage. A cut-out magazine face is topped with a blue Goodyear trucker cap, and a glossy red clown nose covers the middle of the face, while the pack's own label shows through underneath. Floated in a glass oak frame, it joins the workwear, branding and disguise found across the artist's portraits into one pocket-sized object."
+ },
+ {
+  "no": "0005",
+  "title": "Angelica (Discos)",
+  "year": "2026",
+  "series": "Discos",
+  "medium": "Paint on paper",
+  "size": "11.5 × 8.25 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0005.jpg",
+  "desc": "A 45 rpm single painted at full size on slate-blue paper, its centre hole left as bare paper. The orange-and-cream Tico label is copied by hand, with the small print included: “Angelica” by Ismael Rivera, produced by Ismael Rivera and distributed by Fania Records. A homage to the salsa records that soundtracked Latin American homes and barrios, painted with the care usually given to a portrait."
+ },
+ {
+  "no": "0006",
+  "title": "Mi Canoita (Discos)",
+  "year": "2026",
+  "series": "Discos",
+  "medium": "Paint on paper",
+  "size": "11.5 × 8.25 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0006.jpg",
+  "desc": "A companion to Angelica (Discos): a hand-painted 45 on slate-blue paper, this time with a cream Discos Victoria label for “Mi Canoita” by Policarpo Calle y su Conjunto, marked porro-cumbia. The catalogue number, credits and decorative border are lettered in by hand. The pair honours the Colombian and Caribbean dance records central to the artist's cultural memory."
+ },
+ {
+  "no": "0007",
+  "title": "NYC Anonimous Paint Mixer",
+  "year": "2024",
+  "series": "Collage",
+  "medium": "Xerox collage on cellophane paper",
+  "size": "28.5 × 29.5 in.",
+  "price": "$1,200",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0007.jpg",
+  "desc": "A writer at work, assembled from photocopied fragments on crinkled cellophane taped straight to the wall. A halftone mask face with a curling moustache sits under a knit beanie and rhinestone shades, a pipe at the lips and a rose tucked at the brow. Two hands shake two spray cans over a jewelled NY pendant, while a jaguar crosses the chest and barrel cacti mark the corners. The translucent, wrinkled support keeps the piece light and provisional, like a poster pasted up overnight."
+ },
+ {
+  "no": "0008",
+  "title": "Click to Paint",
+  "year": "2024",
+  "series": "Portraits",
+  "medium": "Mixed media on paper (250 g Canson)",
+  "size": "22.5 × 30 in.",
+  "price": "$2,000",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0008.jpg",
+  "desc": "A hooded figure in a deep purple sweatshirt, Raiders cap and mirrored wraparound shades stands against a flat grey ground, face hidden behind a glittering halftone bandana. Both hands hold spray cans, nozzles linked by a single drawn line. Hand-drawn white contours cut the figure out like a sticker, and a Parental Advisory label and the artist's tag frame the lower corners. The title points to the speed of digital image-making set against the slow work of painting by hand."
+ },
+ {
+  "no": "0009",
+  "title": "Wu Mask Clan",
+  "year": "2026",
+  "series": "Portraits",
+  "medium": "Mixed media on unstretched canvas",
+  "size": "26.5 × 20.5 in.",
+  "price": "$1,000",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0009.jpg",
+  "desc": "A head reduced to its gear: black shades and a glossy blue respirator painted over an iridescent pink-orange face, under a dark hood carrying the Wu-Tang W. A classical cherub is traced in fine line to the left, and the bust rests on a printed leopard-pattern drape. The yellow field runs to raw canvas edges folded and stapled back, so the work hangs as a loose sheet rather than a stretched painting — part icon, part protest banner."
+ },
+ {
+  "no": "0010",
+  "title": "Afrodita",
+  "year": "2025",
+  "series": "Noosphere",
+  "medium": "Mixed media on paper (640 g)",
+  "size": "22.5 × 30.5 in.",
+  "price": "$2,000",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0010.jpg",
+  "desc": "A classical goddess and a digital avatar share one sheet. On the left, a grey statue of Aphrodite gathers her drapery against a sage panel. On the right, a yellow-faced figure crowned with a halo bursts from a red-orange field, ringed by white graffiti letter shards. Faint Noosphere metadata — trait types, “soul,” the collection description — runs through the background. Heavy 640 g paper with a deckled edge carries the layers of acrylic, marker and print."
+ },
+ {
+  "no": "0011",
+  "title": "Not a Punk (Green Text Test)",
+  "year": "2026",
+  "series": "Not a Punk",
+  "medium": "Mixed media on linen",
+  "size": "24 × 24 in.",
+  "price": "$2,000",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0011.jpg",
+  "desc": "A text painting in washes of acid green, chartreuse and mint, letting drips run onto a strip of bare canvas at the bottom. On the left, lines of the original CryptoPunks marketplace smart contract — the buyPunk function and its “Didn't send enough ETH” error — are set in blackletter. Over them, in outlined digital type, runs the artist's own manifesto: that digital art is still stuck behind screens and old institutions, and that its future should be collaborative, alive and treating code as culture. Code and statement sit layer over layer, as if one document were being written over the other."
+ },
+ {
+  "no": "0012",
+  "title": "Perico Punk",
+  "year": "2021",
+  "series": "Street Punks",
+  "medium": "Spray paint and markers on cardboard",
+  "size": "15 × 13 in.",
+  "price": "$2,500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0012.jpg",
+  "desc": "A pixel-art punk painted onto a flattened shipping box. Stepped rainbow hair rises like a parrot's plumage — perico is Spanish for parakeet — above a sprayed gold face, oversized white pixel glasses with black cross-shaped pupils, and a cigarette at the edge of the mouth. The navy ground stops short of the corners, where scraps of the box's packing tape and print show through. The 8-bit avatar is brought back to the street, made by hand on cardboard."
+ },
+ {
+  "no": "0013",
+  "title": "Sunset + Wildhair",
+  "year": "2021",
+  "series": "Street Punks",
+  "medium": "Spray paint and markers on cardboard",
+  "size": "14 × 6 in.",
+  "price": "$2,500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0013.jpg",
+  "desc": "A dark pixel figure with wild, spiky hair, its silhouette traced in a white marker line against a flat teal ground on cardboard. Square shades glow in a sunset gradient of orange, coral and violet, and a gold-painted nose and moustache shape the face, with a small cigarette at the side. Creases and folds in the box run through the paint, keeping the support visible."
+ },
+ {
+  "no": "0014",
+  "title": "Zombie Punk",
+  "year": "2021",
+  "series": "Street Punks",
+  "medium": "Spray paint and markers on cardboard",
+  "size": "15.5 × 13.5 in.",
+  "price": "$2,500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0014.jpg",
+  "desc": "Painted on raw brown cardboard, with the box's yellow tamper-proof tape left in all four corners. A mint-green zombie punk with bloodshot red eyes wears a primary-coloured propeller cap and a black beard, a red mouth and a cigarette at the side. Box markings and fold lines stay visible around the figure. Inscribed “Street-Punks 2021” lower left and signed lower right, it is one of the earliest works in this catalogue."
+ },
+ {
+  "no": "0015",
+  "title": "Pink Hoodie",
+  "year": "2021",
+  "series": "Street Punks",
+  "medium": "Spray paint and markers on cardboard",
+  "size": "14.5 × 16 in.",
+  "price": "$2,500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0015.jpg",
+  "desc": "A punk in a pink checkerboard hoodie, painted pixel by pixel on bright blue cardboard. A cream visor and nose shape cover the dark face, gold grills show at the mouth, and a yellow pixel shape rises from the bottom left. In the top corner the artist has drawn a phone's vibrate, signal and battery icons, framing the whole board as a screen. The torn, uneven edges of the box are left as found."
+ },
+ {
+  "no": "0016",
+  "title": "Noosphere Map #37",
+  "year": "2025",
+  "series": "Noosphere Map",
+  "medium": "Drawing and mixed media on Art Basel Miami 2024 map",
+  "size": "20.5 × 16.5 in.",
+  "price": "$900",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0016.jpg",
+  "desc": "Painted directly over an Art Basel Miami Beach 2024 floor map. A woman with long hair rendered in streaks of mint and black, a black domino mask and a wide red-lipped grin fills the sheet against a mustard ground. Fold lines, booth grids, gallery listings and a block of the fair's colour-coded floor plan show through her forehead and around the edges, so the portrait seems to wear the fair itself."
+ },
+ {
+  "no": "0018",
+  "title": "Noosphere Map #38",
+  "year": "2025",
+  "series": "Noosphere Map",
+  "medium": "Drawing and mixed media on Art Basel Miami 2024 map",
+  "size": "20.5 × 16.5 in.",
+  "price": "$900",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0018.jpg",
+  "desc": "A layered, double-exposed face built over a pale-washed Art Basel Miami Beach 2024 map. Two sets of eyes stack in powder blue above a black halftone lower face, with a flame of orange hair, a grey silhouette and a dangling drop earring. A screen-printed jaguar stretches along the bottom, one of the artist's recurring emblems. Exhibitor names and the folded grid of the map remain legible beneath the paint."
+ },
+ {
+  "no": "0019",
+  "title": "Explosive #2",
+  "year": "2024",
+  "series": "Portraits",
+  "medium": "Mixed media on paper",
+  "size": "24 × 18 in.",
+  "price": "$1,200",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0019.jpg",
+  "desc": "A head turned away, rendered as a single mass of deep red over white paper, its surface scored with printed linework and pale marks. A loop of white paint escapes from one side like a fuse or a tongue of smoke. Below, a plaid shirt dissolves into grey halftone. With no face to read, the figure is all pressure and silhouette. A Parental Advisory label and the artist's tag sit in the lower corners."
+ },
+ {
+  "no": "0020",
+  "title": "Dark Shades #21",
+  "year": "2024",
+  "series": "Portraits",
+  "medium": "Mixed media on paper",
+  "size": "18 × 16.1 in.",
+  "price": "$1,200",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0020.jpg",
+  "desc": "A fluorescent yellow head in blue wraparound sunglasses sits against a wine-dark ground scattered with reversed stencil letters. A halftone nose and moustache are printed over the yellow, and a white bandana slips down around the chin. Pink and pale blue screen-printed shapes form the shirt. Torn and scraped edges expose the paper beneath, giving the portrait the feel of a weathered street poster."
+ },
+ {
+  "no": "0021",
+  "title": "Anonymous #20",
+  "year": "2024",
+  "series": "Portraits",
+  "medium": "Mixed media on paper",
+  "size": "18 × 14 in.",
+  "price": "$1,200",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0021.jpg",
+  "desc": "A figure in a cowboy hat, printed in electric blue halftone over a wine-red ground of reversed stencil letters. The face beneath the brim is a smiling, moustached mask — the protest-era symbol of anonymity — merged with the Western hero. Yellow brushwork glows behind the hat, a white shirt is scraped back to bare paper, and the blue tag sits bottom right. Cowboy and hacktivist become the same faceless character."
+ },
+ {
+  "no": "0022",
+  "title": "Blues #4",
+  "year": "2024",
+  "series": "Portraits",
+  "medium": "Mixed media on paper",
+  "size": "21 × 15 in.",
+  "price": "$1,200",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0022.jpg",
+  "desc": "A face in negative against a midnight-blue ground of reversed white letters. A black beanie and halftone wraparound shades sit over a white mask-like face, eyes surfacing in soft violet-blue halftone, the lower face dark with printed stubble. A flat pale-blue shirt anchors the bottom, flanked by the Parental Advisory label and the artist's tag. One of the cooler, quieter works in the portrait series."
+ },
+ {
+  "no": "0023",
+  "title": "Not a punk (Paper test)",
+  "year": "2026",
+  "series": "Not a Punk",
+  "medium": "Mixed media on paper",
+  "size": "11.75 × 11.75 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0023.jpg",
+  "desc": "A study for the Not a Punk text paintings. The artist's manifesto — about digital art being stuck behind screens and stagnant institutions, and its future being collaborative and alive — is set in pale blue outlined digital type over a column of small black text from the CryptoPunks market contract. Faint green and yellow washes sit behind. Code and statement overlap so closely that each makes the other hard to read."
+ },
+ {
+  "no": "0024",
+  "title": "Noosphere Soul #08",
+  "year": "2025",
+  "series": "Noosphere Soul",
+  "medium": "Grey ink on paper",
+  "size": "8.5 × 8.75 in.",
+  "price": "$400",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0024.jpg",
+  "desc": "A small portrait built entirely from fine diagonal hatching in grey ink on deckle-edged paper. A figure in a cap and wide wraparound visor wears large geometric earrings and a star pendant, the lower face left almost blank. The machine-like line spacing echoes a plotter or engraving, turning a Noosphere Tribe avatar into something close to a banknote portrait."
+ },
+ {
+  "no": "0025",
+  "title": "Noosphere Soul #8766",
+  "year": "2025",
+  "series": "Noosphere Soul",
+  "medium": "Charcoal and pencil on heavy recycled paper",
+  "size": "11.5 × 11.5 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0025.jpg",
+  "desc": "A drawn avatar from The Noosphere Tribe, token #8766. A tall patterned headwrap is pulled down over the eyes, leaving only a narrow slot, and a bandana covers the lower face. The figure is drawn in careful pencil against a rough, rubbed charcoal ground that echoes the texture of the recycled paper. A hand-drawn Parental Advisory label and the artist's signature sit in the lower corners."
+ },
+ {
+  "no": "0026",
+  "title": "Eyes Mix 1",
+  "year": "2025",
+  "series": "Eyes",
+  "medium": "Black ink on paper",
+  "size": "11.75 × 11.75 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0026.jpg",
+  "desc": "Eyes from several different faces overlap in dotted halftone and solid black ink, at different scales and angles. Running through them, a single continuous contour line draws one more face, tying the fragments together. The result reads as a crowd caught in one glance, and continues the eyes motif found in 3 Eyes and 4 Eyes Landscape."
+ },
+ {
+  "no": "0027",
+  "title": "Phat Yo Soul",
+  "year": "2025",
+  "series": "Noosphere Soul",
+  "medium": "Pencil on paper",
+  "size": "11.75 × 11.75 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0027.jpg",
+  "desc": "A pale, ghost-like portrait in soft grey on cream paper. The figure wears a bow tie and a high collar, while the face and head are filled with lines of newspaper text — including a headline about Japanese B-boys in New York City — so the subject is literally made of press coverage. The light touch makes the image appear and disappear depending on the light, a quality the series shares."
+ },
+ {
+  "no": "0028",
+  "title": "Noosphere Soul #9060",
+  "year": "2025",
+  "series": "Noosphere Soul",
+  "medium": "Pencil on paper",
+  "size": "11.75 × 11.75 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0028.jpg",
+  "desc": "A soft grey portrait of Noosphere Tribe avatar #9060: a bearded figure in a shaggy bucket hat pulled low over the eyes, a corded necklace at the throat. Two zebra heads rise in mirror image at either shoulder, giving the bust a heraldic, crest-like symmetry. The tone is kept pale throughout, so the image feels like a trace or an imprint rather than a solid drawing."
+ },
+ {
+  "no": "0029",
+  "title": "Noosphere Soul #8858",
+  "year": "2025",
+  "series": "Noosphere Soul",
+  "medium": "Pencil on paper",
+  "size": "11.75 × 11.75 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0029.jpg",
+  "desc": "Noosphere Tribe avatar #8858, drawn in pale grey: a bearded figure in a bandana cap printed with small faces, looking straight out. A blank, mask-like cut-out crosses the upper face, interrupting the portrait the way a glitch interrupts a screen. Collar and shoulders fade into loose tonal marks at the bottom of the sheet."
+ },
+ {
+  "no": "0030",
+  "title": "Shoot Soul",
+  "year": "2025",
+  "series": "Noosphere Soul",
+  "medium": "Pencil on paper",
+  "size": "11.75 × 11.75 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0030.jpg",
+  "desc": "The most reduced work in the series: a flat grey head-and-shoulders silhouette with no features at all, just faint grid marks at the head and a small ring at the throat. It recalls both the default profile picture of an anonymous account and a shooting-range target. A quiet, unsettling image about who gets seen as an individual and who becomes a shape."
+ },
+ {
+  "no": "0031",
+  "title": "Noosphere Soul #9018",
+  "year": "2025",
+  "series": "Noosphere Soul",
+  "medium": "Pencil on paper",
+  "size": "11.75 × 11.75 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0031.jpg",
+  "desc": "Noosphere Tribe avatar #9018: a bearded figure in round wire glasses and a polka-dot bow tie, drawn in soft grey. The head is filled with fragments of newspaper text, the same B-boys article that runs through Phat Yo Soul and Laser Experiment #1, linking the drawn avatars to the artist's long-running work with the printed press."
+ },
+ {
+  "no": "0032",
+  "title": "Noosphere Soul #8810",
+  "year": "2025",
+  "series": "Noosphere Soul",
+  "medium": "Pencil on paper",
+  "size": "11.75 × 11.75 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0032.jpg",
+  "desc": "Noosphere Tribe avatar #8810: tousled hair, oversized cat-eye sunglasses sitting askew across the face, full lips, and a houndstooth jacket fastened with a flower brooch. Rendered in pale grey on cream, the drawing balances fashion-shoot glamour with the flat, patterned logic of a generative trait sheet."
+ },
+ {
+  "no": "0033",
+  "title": "Noosphere Soul #8766",
+  "year": "2025",
+  "series": "Noosphere Soul",
+  "medium": "Pencil on paper",
+  "size": "11.75 × 11.75 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0033.jpg",
+  "desc": "A pale grey version of Noosphere Tribe avatar #8766: a patterned headwrap pulled low over the eyes, the lower face covered by a bandana, a Parental Advisory label and the artist's tag in the lower corners. The same avatar appears in a dense charcoal version (LM-0025). Here the image is kept faint and even, so it seems to surface from the paper rather than sit on it."
+ },
+ {
+  "no": "0034",
+  "title": "Noosphere Soul #8771",
+  "year": "2025",
+  "series": "Noosphere Soul",
+  "medium": "Pencil on paper",
+  "size": "11.75 × 11.75 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0034.jpg",
+  "desc": "Noosphere Tribe avatar #8771, drawn in soft grey: a figure in a trucker cap with a patterned respirator over the nose and mouth and a polka-dot bow tie. Fragments of the newspaper article about Japanese B-boys in New York City fill the face, as in Phat Yo Soul and Noosphere Soul #9018, linking the avatar to the artist's long work with printed press."
+ },
+ {
+  "no": "0035",
+  "title": "Noosphere Ink Soul",
+  "year": "2025",
+  "series": "Noosphere Soul",
+  "medium": "Black ink and pencil on paper",
+  "size": "11.75 × 11.75 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0035.jpg",
+  "desc": "The bow-tied, round-glasses avatar seen in Noosphere Soul #9018, redrawn in solid black ink. Where the pencil version is pale and ghostly, this one is crisp and high-contrast: a dark beard, a patterned bow tie and fine halftone shading, with the B-boys newspaper text running across the head. Seen side by side, the two show how far a change of medium alters the same image."
+ },
+ {
+  "no": "0036",
+  "title": "Noosphere Soul",
+  "year": "2025",
+  "series": "Noosphere Soul",
+  "medium": "Charcoal and pencil on paper",
+  "size": "11.5 × 11.5 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0036.jpg",
+  "desc": "A figure in a wide-brimmed hat and dark rectangular sunglasses, drawn in pencil against a crosshatched charcoal ground on deckle-edged paper. A long, curling pipe sweeps out from the mouth, and the face is built from rounded, collage-like segments above a checked shirt. The only touch of colour is the deep blue-black of the lenses."
+ },
+ {
+  "no": "0037",
+  "title": "Jaguar Face",
+  "year": "2025",
+  "series": "Portraits",
+  "medium": "Black ink on thick paper",
+  "size": "11.75 × 11.75 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0037.jpg",
+  "desc": "A frontal face on thick, deckle-edged paper, built from soft stippled ink that gathers in the jaw and cheeks and leaves the planes of the face open. The shoulders are covered in a dense jaguar-spot pattern, bringing the jaguar — one of the artist's recurring emblems — onto the sitter as clothing or skin. Quiet and direct, it reads almost like a printed rubbing."
+ },
+ {
+  "no": "0038",
+  "title": "Durag",
+  "year": "2025",
+  "series": "Fragments",
+  "medium": "Micron pen and ink pen on paper",
+  "size": "14 × 11 in.",
+  "price": "$400",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0038.jpg",
+  "desc": "A durag drawn on its own, with no wearer, floating in the middle of a cream sheet. The dome is built from thousands of fine pen marks that catch light along the stretched folds, and a looser band of stippling marks the edge where it would meet the brow. Taking the head away turns an everyday object into a portrait of whoever might have worn it."
+ },
+ {
+  "no": "0039",
+  "title": "Look Up",
+  "year": "2025",
+  "series": "Fragments",
+  "medium": "Ink pen on paper",
+  "size": "14 × 11 in.",
+  "price": "$400",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0039.jpg",
+  "desc": "Just a pair of eyes and brows, glancing upward, in the middle of an otherwise empty page. The shadows are drawn in dense crosshatching with a faint green-violet sheen, and one brow lifts higher than the other, giving the face it implies a sceptical, knowing look. The drawing relies on what is left out."
+ },
+ {
+  "no": "0040",
+  "title": "Jesus Piece",
+  "year": "2025",
+  "series": "Fragments",
+  "medium": "Ink pen on paper",
+  "size": "14 × 11 in.",
+  "price": "$400",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0040.jpg",
+  "desc": "A heavy chain and Christ-head pendant — the “Jesus piece” of hip-hop jewellery — drawn hanging in space with no neck to wear it. The chain is outlined link by link, and the small pendant face is shaded in tight crosshatching. Sacred image, status symbol and street style meet in one small object, set alone on the page like a specimen."
+ },
+ {
+  "no": "0041",
+  "title": "Ancient Eyes",
+  "year": "2025",
+  "series": "Fragments",
+  "medium": "Ink pen on paper",
+  "size": "14 × 11 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0041.jpg",
+  "desc": "A head under a flat-topped cap, its face broken into layered pieces: several pairs of eyes, rows of beaded and zig-zag pattern, and a wide collar like a carved breastplate. Printed-looking halftone and dense hatching give it the look of a weathered stone carving or a rubbing from an old relief, with a contemporary face under the surface."
+ },
+ {
+  "no": "0042",
+  "title": "River mask",
+  "year": "2025",
+  "series": "Fragments",
+  "medium": "Ink pen on paper",
+  "size": "14 × 11 in.",
+  "price": "$400",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0042.jpg",
+  "desc": "A domino mask with swept-up points, filled with diagonal plaid hatching in a green-violet ink sheen. Through the eyeholes, a pair of wide, watchful eyes looks straight out. With no face around it, the mask becomes the whole portrait, a theme that runs through the masked figures elsewhere in this catalogue."
+ },
+ {
+  "no": "0043",
+  "title": "ODB",
+  "year": "2025",
+  "series": "Fragments",
+  "medium": "Ink pen on paper",
+  "size": "14 × 11 in.",
+  "price": "$400",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0043.jpg",
+  "desc": "A cut-out band of face — two wide eyes and the bridge of a nose — drawn in high-contrast black ink with a jagged torn edge, as though ripped from a photograph. The title nods to the Wu-Tang Clan's ODB, tying it to the hip-hop references found across the catalogue, including Wu Mask Clan."
+ },
+ {
+  "no": "0044",
+  "title": "Aaauh",
+  "year": "2025",
+  "series": "Fragments",
+  "medium": "Ink pen on paper",
+  "size": "14 × 11 in.",
+  "price": "$400",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0044.jpg",
+  "desc": "The lower half of a face — nostrils, open lips and chin — rendered entirely in hand-drawn halftone dots that thin out toward the edges. The mouth is caught mid-sound, and the title spells that sound out. Drawing a mechanical print screen dot by dot by hand is typical of this series."
+ },
+ {
+  "no": "0045",
+  "title": "Pink “Becky” Punk (Not a Punk)",
+  "year": "2026",
+  "series": "Not a Punk",
+  "medium": "Paint and pencil on linen",
+  "size": "20 × 20 in.",
+  "price": "$3,000",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0045.jpg",
+  "desc": "A pixel-portrait woman with pink hair, a black cap flecked with white pixels, an ochre face, red eyeshadow and pink lips, painted large on a square of linen. Around her, washes of yellow, pink and lavender carry rotated lines of red smart-contract code and the phrase “Didn't send enough ETH.” The loose, painterly ground pushes against the hard grid of the figure, setting a hand-made painting against the code it borrows from."
+ },
+ {
+  "no": "0046",
+  "title": "Grey Hoodie (Not a Punk)",
+  "year": "2026",
+  "series": "Not a Punk",
+  "medium": "Paint on linen",
+  "size": "20 × 20 in.",
+  "price": "$3,000",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0046.jpg",
+  "desc": "A pale-faced pixel figure in a grey and black hood fills a square of raw linen washed with olive and lime. Faint lines of the original CryptoPunks market contract — the Solidity version line, contract name and fragments of its functions — run behind the head in black and blue stencil. The linen's weave shows through the thin paint, keeping the surface warm and tactile against the crisp grid of the figure."
+ },
+ {
+  "no": "0047",
+  "title": "The Final Punk (Not a Punk)",
+  "year": "2026",
+  "series": "Not a Punk",
+  "medium": "Paint and pencil on linen",
+  "size": "20 × 20 in.",
+  "price": "$3,000",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0047.jpg",
+  "desc": "A pixel figure with a tall black and grey mohawk, ochre face and pink lips, painted over white-primed linen with a strip of raw linen left at one edge. Behind it, the opening lines of the CryptoPunks market contract — including the comment about using the image hash to verify the file of all the punks — are printed in grey. On the right, outlined fragments of the artist's manifesto fade out. Code, statement and figure are stacked, with the painted head on top."
+ },
+ {
+  "no": "0048",
+  "title": "Hoodie Matrix (Not a Punk)",
+  "year": "2026",
+  "series": "Not a Punk",
+  "medium": "Paint, pen and plotter on paper, framed",
+  "size": "25 × 21 in.",
+  "price": "$1,200",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0048.jpg",
+  "desc": "A pixel figure in a black and grey hood with a pale pink face, painted with paint pen on white paper. Behind it, a pen plotter has drawn columns of the CryptoPunks market contract — variable names, events, the image hash — rotated on their side so they read like falling characters. The figure was painted by hand and the code was drawn by machine. Presented in a distressed black and gold frame."
+ },
+ {
+  "no": "0049",
+  "title": "Black Code (Froot Loops)",
+  "year": "2024",
+  "series": "Code",
+  "medium": "Mixed media on canvas",
+  "size": "29 × 20 in.",
+  "price": "$1,800",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0049.jpg",
+  "desc": "A field of raw NFT metadata from The Noosphere Tribe, rewritten in outlined blackletter across a deep black ground. Trait types and values — background, body, eyes, hair (“Big Crazy Hair”), mouth — run together with the collection's own description of 10,000 unique digital collage collectibles by MASNAH.eth. Iridescent outlines shift from gold to violet, pink and green, and the text breaks, repeats and drops out toward the bottom edge, turning machine-readable code into something closer to a manuscript page or a tagged wall."
+ },
+ {
+  "no": "0050",
+  "title": "Yellow Code #1",
+  "year": "2024",
+  "series": "Code",
+  "medium": "Mixed media on raw linen",
+  "size": "32 × 22 in.",
+  "price": "$2,500 each",
+  "sold": false,
+  "note": "Sold as a pair with Yellow Code #2",
+  "img": "images/LM-0050.jpg",
+  "desc": "Two columns of black stencilled characters in a blocky digital-display face run vertically up the left and right sides of the canvas, leaving an open centre of scumbled yellow over olive and raw-linen undertones. The text is token metadata: an IPFS address, the attributes array, and trait values such as “El Yung Primo” and “Out of Time.” Dragged, semi-transparent layers of paint let the linen weave show through, so the code seems to sit at the edges of a field that is slowly erasing it. Sold together as a pair, $2,500 each."
+ },
+ {
+  "no": "0051",
+  "title": "Yellow Code #2",
+  "year": "2024",
+  "series": "Code",
+  "medium": "Mixed media on raw linen",
+  "size": "32 × 22 in.",
+  "price": "$2,500 each",
+  "sold": false,
+  "note": "Sold as a pair with Yellow Code #1",
+  "img": "images/LM-0051.jpg",
+  "desc": "A companion to Yellow Code #1. The same stencilled metadata — IPFS hash, attributes, “El Yung Primo,” “Out of Time” — is laid in black over hand-painted yellow on raw linen, with the unprimed edge left exposed. Shown together, the two canvases work as a pair of near-repetitions, echoing the way one generative token differs from the next by only a few lines of code. Sold together as a pair, $2,500 each."
+ },
+ {
+  "no": "0052",
+  "title": "Noosphere Composition #1",
+  "year": "2024",
+  "series": "Noosphere",
+  "medium": "Mixed media on stretched linen",
+  "size": "21 × 18 in.",
+  "price": "$2,200",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0052.jpg",
+  "desc": "A Noosphere Tribe avatar translated into paint. A halftone-printed face in a five-panel cap is built up with yellow, violet and peach passages, set against a flat red silhouette and a reclining jaguar in screen-printed yellow and black. Each element is cut out with a hand-drawn white contour, like collage on a black ground. A Parental Advisory label sits bottom left and the artist's tag bottom right, borrowing the look of a mixtape cover."
+ },
+ {
+  "no": "0053",
+  "title": "Calculadora (Red)",
+  "year": "2024",
+  "series": "Portraits",
+  "medium": "Mixed media on raw linen",
+  "size": "32 × 22 in.",
+  "price": "$2,200",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0053.jpg",
+  "desc": "A face assembled from a pocket calculator. A worn trucker cap sits on top of the display, white wraparound shades cover the screen, a halftone nose drops onto the keypad, and a thick painted moustache and goatee frame the “ON” key. Built up in glittering blues, reds and silvers on an oxblood ground, the figure is part working-class archetype, part machine — a portrait of someone who is always doing the maths."
+ },
+ {
+  "no": "0054",
+  "title": "Noosphere Map #33",
+  "year": "2025",
+  "series": "Noosphere Map",
+  "medium": "Drawing and mixed media on Art Basel Miami 2024 map, wood frame",
+  "size": "23.5 × 27.5 in.",
+  "price": "$1,250",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0054.jpg",
+  "desc": "Drawn and painted directly on a fair-floor map from Art Basel Miami Beach 2024. A figure with red curls, an eye mask and a pale blue coat rises over the navy cover and the booth grid of the map, while fragments of the Noosphere metadata run in red digital type down the right side. The art fair's own logistics — booths, aisles, exits — become the ground the portrait stands on. Framed in natural wood with a white mat."
+ },
+ {
+  "no": "0055",
+  "title": "Xerox Collage on Found Canvas",
+  "year": "2024",
+  "series": "Collage",
+  "medium": "Xerox collage on found canvas, framed",
+  "size": "13 × 10 in.",
+  "price": "$800",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0055.jpg",
+  "desc": "Photocopied halftone fragments — a face with a painted curling moustache, a hand at the chin, bundled hair — are layered over a found canvas of loose pink and teal brushwork. Smaller cut-outs of a jaguar, a barrel cactus, a diving bird and a spray can gather at the edges. The xerox grain against the found painting sets a cheap reproduction against a one-off original. Float-framed in natural wood."
+ },
+ {
+  "no": "0056",
+  "title": "Front cover (Lilia Prado)",
+  "year": "2013",
+  "series": "Found Print",
+  "medium": "Paint on found magazine, framed",
+  "size": "16.5 × 14.25 in.",
+  "price": "$800",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0056.jpg",
+  "desc": "Painted over the cover of a vintage Mexican Vodevil magazine featuring the actress Lilia Prado. The artist reworks the pin-up by the pool with chalky white and ochre linework, adding weight, texture and a downcast expression that pushes against the glamour of the original print. The magazine's masthead, issue number and swimming-pool backdrop stay visible. Presented in its aged wooden frame and foxed mat, which belong to the object's history."
+ },
+ {
+  "no": "0057",
+  "title": "3 Eyes",
+  "year": "2025",
+  "series": "Eyes",
+  "medium": "Ink on paper, framed",
+  "size": "13 × 13 in.",
+  "price": "$500",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0057.jpg",
+  "desc": "Three sets of eyes stacked and offset across a white sheet, each pass drawn in a different register: dense solid black, then a lighter version filled with fine diagonal hatching that looks like a plotter pass. The overlap suggests a gaze caught mid-movement or a scan run more than once. A spare, graphic work in a white frame."
+ },
+ {
+  "no": "0058",
+  "title": "Laser Experiment #1",
+  "year": "2026",
+  "series": "Laser",
+  "medium": "Laser on paper, framed",
+  "size": "17.5 × 13.25 in.",
+  "price": "$800",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0058.jpg",
+  "desc": "A portrait burned into heavy cotton paper with a laser. A figure in a cap pulls a patterned bandana up over the lower face, rendered in contour lines, dither dots and scorched texture. Fragments of newsprint are burned into the face, including headlines about Japanese B-boys in New York City, tying the image to hip-hop's global spread and to the artist's long-running newspaper work. Framed in black with a warm toned mat."
+ },
+ {
+  "no": "0059",
+  "title": "4 Eyes Landscape",
+  "year": "2026",
+  "series": "Eyes",
+  "medium": "Mixed media on raw canvas",
+  "size": "22 × 18 in.",
+  "price": "$900",
+  "sold": false,
+  "note": "",
+  "img": "images/LM-0059.jpg",
+  "desc": "Four pairs of printed eyes look out from a dense field of dabbed cadmium yellow, under a band of blue-green marks and small silver bird forms. The canvas is pinned loose over its support so raw, frayed edges, nail heads and drips stay in view and the object reads partly as painting, partly as banner. It extends the eyes motif from the works on paper into a looser, more painterly landscape."
+ }
+];
+/* ========================================================== */
+
+WORKS.sort((a,b)=>a.no.localeCompare(b.no));
+const grid=document.getElementById('grid'), filtersEl=document.getElementById('filters'), countEl=document.getElementById('count');
+document.getElementById('total').textContent = WORKS.length;
+const series=["All",...new Set(WORKS.map(w=>w.series))];
+let active="All", shown=[];
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function specHTML(w){return `<p class="spec"><span>${esc(w.medium)}</span><span>${esc(w.size)}</span>${w.year?`<span>${esc(w.year)}</span>`:""}</p>`}
+
+function priceText(w){return w.sold?"Sold":(w.price||"Price on request");}
+const EMAIL="loro@masnah.studio";
+function mailto(w){const sub=`Inquiry: ${w.title} (LM-${w.no})`;const body=`Hello Lorenzo,\n\nI'm interested in "${w.title}" (LM-${w.no}) \u2014 ${w.medium}, ${w.size}${w.year?", "+w.year:""}.\nCould you share availability and shipping details?\n\nThank you,\n`;return `mailto:${EMAIL}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}`;}
+function priceHTML(w){return `<div class="price"><span>${w.note?esc(w.note):"Unique original"}</span><b${w.sold?' class="sold"':''}>${esc(priceText(w))}</b></div><a class="inquire" href="${mailto(w)}" target="_top">Inquire about this work</a>`;}
+function renderFilters(){
+  filtersEl.innerHTML=series.map(s=>`<button aria-pressed="${s===active}" data-s="${esc(s)}">${esc(s)}</button>`).join("");
+  filtersEl.querySelectorAll('button').forEach(b=>b.onclick=()=>{active=b.dataset.s;renderFilters();render();try{localStorage.setItem('lm-filter',active)}catch(e){}});
+}
+function render(){
+  shown=WORKS.filter(w=>active==="All"||w.series===active);
+  countEl.textContent=`${shown.length} work${shown.length===1?"":"s"}`;
+  grid.innerHTML=shown.map((w,i)=>`
+    <article class="work">
+      <button class="frame" data-i="${i}" aria-label="View ${esc(w.title)} larger"><img loading="lazy" src="${esc(w.img)}" alt="${esc(w.title)}, ${esc(w.medium)}"></button>
+      <div class="no">LM-${esc(w.no)}</div>
+      <h2>${esc(w.title)}</h2>
+      ${specHTML(w)}
+      <p class="desc">${esc(w.desc)}</p>
+      ${priceHTML(w)}
+    </article>`).join("");
+  grid.querySelectorAll('.frame').forEach(b=>b.onclick=()=>openLB(+b.dataset.i));
+}
+
+const lb=document.getElementById('lb'), lbImg=document.getElementById('lbImg'), lbInfo=document.getElementById('lbInfo');
+let cur=0;
+function openLB(i){cur=(i+shown.length)%shown.length;const w=shown[cur];
+  lbImg.src=w.img; lbImg.alt=w.title;
+  lbInfo.innerHTML=`<div class="no">LM-${esc(w.no)}</div><h2>${esc(w.title)}</h2>${specHTML(w)}<p class="desc">${esc(w.desc)}</p>${priceHTML(w)}`;
+  lb.classList.add('open'); document.getElementById('close').focus();}
+function closeLB(){lb.classList.remove('open')}
+document.getElementById('close').onclick=closeLB;
+document.getElementById('prev').onclick=()=>openLB(cur-1);
+document.getElementById('next').onclick=()=>openLB(cur+1);
+document.addEventListener('keydown',e=>{if(!lb.classList.contains('open'))return;
+  if(e.key==='Escape')closeLB(); if(e.key==='ArrowLeft')openLB(cur-1); if(e.key==='ArrowRight')openLB(cur+1);});
+
+try{const f=localStorage.getItem('lm-filter'); if(f&&series.includes(f))active=f;}catch(e){}
+renderFilters(); render();
+</script>
+</body>
+</html>
